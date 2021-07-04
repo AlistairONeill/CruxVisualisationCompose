@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -18,9 +17,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerMoveFilter
 import androidx.compose.ui.unit.dp
-import crux.visualisation.domain.TemporalData
 import crux.visualisation.domain.visualisation.GraphRenderData
-import crux.visualisation.domain.visualisation.getRenderData
 import java.time.LocalTime
 import kotlin.math.PI
 import kotlin.math.atan2
@@ -29,7 +26,7 @@ import kotlin.math.sin
 
 @Composable
 fun SimpleColorGraphPanel(
-    temporalData: MutableState<TemporalData>
+    renderData: GraphRenderData
 ) {
     val (mouseCoords, setMouseCoords) = remember { mutableStateOf<Offset?>(null) }
     val (timeRealizer, setTimeRealizer) = remember { mutableStateOf<TimeRealizer?>(null) }
@@ -38,7 +35,6 @@ fun SimpleColorGraphPanel(
         Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        val renderData = temporalData.value.getRenderData()
         Canvas(
             Modifier
                 .fillMaxSize(0.8f)

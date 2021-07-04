@@ -8,13 +8,15 @@ import crux.visualisation.components.generic.SidePanels
 import crux.visualisation.components.visualisation.VisualisationPanel
 import crux.visualisation.domain.TemporalData
 import crux.visualisation.domain.toInputAcceptor
+import crux.visualisation.domain.visualisation.toRenderDataSource
 
 @Composable
 fun MainComponent(
     temporalData: MutableState<TemporalData>
 ) {
     VisualisationPanel(
-        temporalData
+        temporalData.value.visualisationMode,
+        temporalData.value.toRenderDataSource()
     )
 
     SidePanels(

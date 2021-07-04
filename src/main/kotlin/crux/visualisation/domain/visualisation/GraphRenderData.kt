@@ -15,11 +15,11 @@ data class GraphRenderData(
     val data: List<List<Color?>>
 )
 
-fun TemporalData.getRenderData(): GraphRenderData {
+fun TemporalData.toRenderDataSource(): () -> GraphRenderData = {
     val validTimes = history.flatMap(HistoryItem::validTimes).sorted()
     val transactionTimes = history.map(HistoryItem::transactionTime).sorted()
 
-    return GraphRenderData(
+    GraphRenderData(
         validTimes,
         transactionTimes,
         validTimes.map { validTime ->
