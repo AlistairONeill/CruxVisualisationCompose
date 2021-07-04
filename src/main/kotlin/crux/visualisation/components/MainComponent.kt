@@ -7,6 +7,7 @@ import androidx.compose.runtime.MutableState
 import crux.visualisation.components.generic.SidePanels
 import crux.visualisation.components.visualisation.VisualisationPanel
 import crux.visualisation.domain.TemporalData
+import crux.visualisation.domain.toInputAcceptor
 
 @Composable
 fun MainComponent(
@@ -16,5 +17,8 @@ fun MainComponent(
         temporalData
     )
 
-    SidePanels(temporalData)
+    SidePanels(
+        temporalData.toInputAcceptor(),
+        temporalData.value.history
+    )
 }

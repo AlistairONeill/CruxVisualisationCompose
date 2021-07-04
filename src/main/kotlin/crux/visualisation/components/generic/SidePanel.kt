@@ -2,16 +2,16 @@
 
 package crux.visualisation.components.generic
 
-import crux.visualisation.components.input.TimedInputPanel
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.Column
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -20,12 +20,14 @@ import androidx.compose.ui.unit.dp
 import crux.visualisation.components.generic.SidePanelId.History
 import crux.visualisation.components.generic.SidePanelId.Input
 import crux.visualisation.components.history.HistoryPanel
-import crux.visualisation.domain.TemporalData
-
+import crux.visualisation.components.input.TimedInputPanel
+import crux.visualisation.domain.history.HistoryItem
+import crux.visualisation.domain.input.InputDataWithTimes
 
 @Composable
 fun SidePanels(
-    temporalData: MutableState<TemporalData>
+    inputAcceptor: (InputDataWithTimes) -> Unit,
+    history: List<HistoryItem>
 ) {
     val (expanded, setExpanded) = remember { mutableStateOf(false) }
     val (expandedPanel, setExpandedPanel) = remember { mutableStateOf<SidePanelId?>(null) }
@@ -91,8 +93,8 @@ fun SidePanels(
                     }
 
                     when (expandedPanel) {
-                        History -> HistoryPanel(width, temporalData)
-                        Input -> TimedInputPanel(width) { temporalData.value = temporalData.value.submit(it) }
+                        History -> HistoryPanel(width, history)
+                        Input -> TimedInputPanel(width, inputAcceptor)
                     }
                 }
             }

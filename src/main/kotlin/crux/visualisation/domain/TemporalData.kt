@@ -1,5 +1,6 @@
 package crux.visualisation.domain
 
+import androidx.compose.runtime.MutableState
 import crux.api.ICruxAPI
 import crux.visualisation.domain.history.HistoryItem
 import crux.visualisation.domain.input.InputDataWithTimes
@@ -29,3 +30,5 @@ class TemporalData private constructor(
             visualisationMode
         )
 }
+
+fun MutableState<TemporalData>.toInputAcceptor(): (InputDataWithTimes) -> Unit = { value = value.submit(it) }

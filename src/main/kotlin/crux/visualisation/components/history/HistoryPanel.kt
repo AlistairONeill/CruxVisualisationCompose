@@ -4,24 +4,20 @@ package crux.visualisation.components.history
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.unit.Dp
-import crux.visualisation.domain.TemporalData
+import crux.visualisation.domain.history.HistoryItem
 
 @Composable
 fun HistoryPanel(
     width: Dp,
-    temporalData: MutableState<TemporalData>
+    history: List<HistoryItem>
 ) {
     Column {
-        temporalData
-            .value
-            .history
-            .forEach { historyItem ->
-                HistoryItemPanel(
-                    width,
-                    historyItem
-                )
-            }
+        history.forEach { historyItem ->
+            HistoryItemPanel(
+                width,
+                historyItem
+            )
+        }
     }
 }
