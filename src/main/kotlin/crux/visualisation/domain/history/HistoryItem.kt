@@ -1,4 +1,4 @@
-package crux.visualisation.domain
+package crux.visualisation.domain.history
 
 import crux.api.TransactionInstant
 import crux.api.tx.Transaction

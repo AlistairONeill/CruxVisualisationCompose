@@ -3,7 +3,7 @@ package crux.visualisation.adapter
 import crux.api.ICruxAPI
 import crux.api.TransactionInstant
 import crux.api.tx.Transaction
-import crux.visualisation.domain.TransactionHistoryItem
+import crux.visualisation.domain.history.TransactionHistoryItem
 
 class LoggingCruxAdapter(
     private val delegate: ICruxAPI

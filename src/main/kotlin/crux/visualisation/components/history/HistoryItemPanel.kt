@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import crux.visualisation.components.generic.MySpacer
-import crux.visualisation.domain.HistoryItem
+import crux.visualisation.domain.history.HistoryItem
 import crux.visualisation.domain.input.InputData.Link.DeleteLink
 import crux.visualisation.domain.input.InputData.Link.PutLink
 import crux.visualisation.domain.input.InputData.None.DeleteSimpleColor

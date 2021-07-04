@@ -6,6 +6,7 @@ import crux.api.ICruxAPI
 import crux.api.tx.submitTx
 import crux.visualisation.adapter.blocking
 import crux.visualisation.adapter.withLog
+import crux.visualisation.domain.history.HistoryItem
 import crux.visualisation.domain.input.InputData
 import crux.visualisation.domain.input.InputData.*
 import crux.visualisation.domain.input.InputData.Color.*
