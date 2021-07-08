@@ -15,7 +15,7 @@ data class GraphRenderData(
     val data: List<List<Color?>>
 )
 
-fun TemporalData.toRenderDataSource(): () -> GraphRenderData = {
+fun TemporalData.toGraphRenderDataSource(): () -> GraphRenderData = {
     val validTimes = history.flatMap(HistoryItem::validTimes).sorted()
     val transactionTimes = history.map(HistoryItem::transactionTime).sorted()
 
@@ -24,7 +24,7 @@ fun TemporalData.toRenderDataSource(): () -> GraphRenderData = {
         transactionTimes,
         validTimes.map { validTime ->
             transactionTimes.map { transactionTime ->
-                cruxAdapter[validTime, transactionTime]?.hexToColor()?.let(::Color)
+                cruxAdapter.getSingleColor(validTime, transactionTime)?.hexToColor()?.let(::Color)
             }
         }
     )

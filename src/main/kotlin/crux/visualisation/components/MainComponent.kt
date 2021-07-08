@@ -8,7 +8,9 @@ import crux.visualisation.components.generic.SidePanels
 import crux.visualisation.components.visualisation.VisualisationPanel
 import crux.visualisation.domain.TemporalData
 import crux.visualisation.domain.toInputAcceptor
-import crux.visualisation.domain.visualisation.toRenderDataSource
+import crux.visualisation.domain.visualisation.toNetworkRenderDataSource
+import crux.visualisation.domain.visualisation.toGraphRenderDataSource
+import crux.visualisation.domain.visualisation.toVisualisationMode
 
 @Composable
 fun MainComponent(
@@ -16,11 +18,13 @@ fun MainComponent(
 ) {
     VisualisationPanel(
         temporalData.value.visualisationMode,
-        temporalData.value.toRenderDataSource()
+        temporalData.value.toGraphRenderDataSource(),
+        temporalData.value.toNetworkRenderDataSource()
     )
 
     SidePanels(
         temporalData.toInputAcceptor(),
-        temporalData.value.history
+        temporalData.value.history,
+        temporalData.toVisualisationMode()
     )
 }

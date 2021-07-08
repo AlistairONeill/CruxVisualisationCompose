@@ -6,7 +6,6 @@ import crux.visualisation.domain.history.HistoryItem
 import crux.visualisation.domain.input.InputDataWithTimes
 import crux.visualisation.domain.visualisation.VisualisationMode
 import crux.visualisation.domain.visualisation.VisualisationMode.SimpleColorGraph
-import java.util.*
 
 class TemporalData private constructor(
     val cruxAdapter: CruxAdapter,
@@ -21,12 +20,17 @@ class TemporalData private constructor(
         )
     }
 
-    operator fun get(validTime: Date, transactionTime: Date) = cruxAdapter[validTime, transactionTime]
-
     fun submit(inputWithTimes: InputDataWithTimes) =
         TemporalData(
             cruxAdapter,
             history + cruxAdapter.submit(inputWithTimes),
+            visualisationMode
+        )
+
+    fun withVisualisationMode(visualisationMode: VisualisationMode) =
+        TemporalData(
+            cruxAdapter,
+            history,
             visualisationMode
         )
 }

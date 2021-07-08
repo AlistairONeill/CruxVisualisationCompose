@@ -3,6 +3,7 @@ package crux.visualisation.domain
 import crux.api.CruxDocument
 import crux.api.CruxDocument.builder
 import crux.api.ICruxAPI
+import crux.api.query.conversion.q
 import crux.api.tx.submitTx
 import crux.visualisation.adapter.blocking
 import crux.visualisation.adapter.withLog
@@ -20,6 +21,7 @@ import crux.visualisation.domain.input.ValidTimeData.HasNoTimes
 import crux.visualisation.domain.input.ValidTimeData.HasValidTime
 import crux.visualisation.domain.input.ValidTimeData.HasValidTime.*
 import crux.visualisation.domain.input.operation
+import crux.visualisation.query.getColors
 import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -77,11 +79,14 @@ class CruxAdapter(crux: ICruxAPI) {
         )
     }
 
-    operator fun get(validTime: LocalTime, transactionTime: LocalTime) = get(validTime.toDate(), transactionTime.toDate())
-    operator fun get(validTime: Date, transactionTime: Date) =
+    fun getSingleColor(validTime: LocalTime, transactionTime: LocalTime) = getSingleColor(validTime.toDate(), transactionTime.toDate())
+
+    private fun getSingleColor(validTime: Date, transactionTime: Date) =
         crux.db(validTime, transactionTime)
             .entity(SIMPLE_ID)
             ?.get(COLOUR_KEY) as String?
+
+    fun getColors(): List<VisualisationColor> = crux.db().getColors()
 
     private fun LocalTime.toDate() = LocalDateTime.of(date, this).atZone(UTC).toInstant().let(Date::from)
 

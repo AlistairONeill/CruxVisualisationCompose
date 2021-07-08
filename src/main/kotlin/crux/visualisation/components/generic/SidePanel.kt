@@ -17,24 +17,28 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import crux.visualisation.components.generic.SidePanelId.History
-import crux.visualisation.components.generic.SidePanelId.Input
+import crux.visualisation.MutableDerivative
+import crux.visualisation.components.generic.SidePanelId.*
 import crux.visualisation.components.history.HistoryPanel
 import crux.visualisation.components.input.TimedInputPanel
+import crux.visualisation.components.visualisation.VisualisationModePanel
 import crux.visualisation.domain.history.HistoryItem
 import crux.visualisation.domain.input.InputDataWithTimes
+import crux.visualisation.domain.visualisation.VisualisationMode
+import crux.visualisation.exhaustive
 
 @Composable
 fun SidePanels(
     inputAcceptor: (InputDataWithTimes) -> Unit,
-    history: List<HistoryItem>
+    history: List<HistoryItem>,
+    mutableVisualisationMode: MutableDerivative<VisualisationMode>
 ) {
     val (expanded, setExpanded) = remember { mutableStateOf(false) }
     val (expandedPanel, setExpandedPanel) = remember { mutableStateOf<SidePanelId?>(null) }
 
     @Composable
     fun divider() = Divider(
-        modifier = Modifier.width(132.dp),
+        modifier = Modifier.width(240.dp),
         color = MaterialTheme.colors.surface,
         thickness = 1.dp
     )
@@ -44,7 +48,7 @@ fun SidePanels(
             Column {
                 Row(
                     Modifier
-                        .width(132.dp)
+                        .width(240.dp)
                         .padding(16.dp)
                         .clickable { setExpanded(!expanded) },
                     verticalAlignment = Alignment.CenterVertically,
@@ -95,7 +99,8 @@ fun SidePanels(
                     when (expandedPanel) {
                         History -> HistoryPanel(width, history)
                         Input -> TimedInputPanel(width, inputAcceptor)
-                    }
+                        Visualisation -> VisualisationModePanel(width, mutableVisualisationMode)
+                    }.exhaustive
                 }
             }
         }
@@ -113,7 +118,7 @@ fun SidePanelButton(
         Row(Modifier.clickable { setExpanded(id.takeIf{!selected}) }) {
             MySpacer()
             Row(
-                modifier = Modifier.width(100.dp),
+                modifier = Modifier.width(208.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -126,5 +131,5 @@ fun SidePanelButton(
 }
 
 enum class SidePanelId {
-    History, Input
+    History, Input, Visualisation
 }

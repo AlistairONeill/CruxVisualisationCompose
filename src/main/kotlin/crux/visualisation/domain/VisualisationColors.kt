@@ -11,6 +11,12 @@ enum class VisualisationColor(val hex: String) {
     Color8("#ff7f00"),
 }
 
+object VisualisationColors {
+    private val map = VisualisationColor.values().associateBy(VisualisationColor::hex)
+
+    fun get(hex: String) = map[hex]!!
+}
+
 fun String.hexToColor(): Long =
     if (this[0] == '#') { // Use a long to avoid rollovers on #ffXXXXXX
         var color = substring(1).toLong(16)
