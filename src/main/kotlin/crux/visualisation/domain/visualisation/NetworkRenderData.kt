@@ -13,6 +13,6 @@ data class Link(val from: VisualisationColor, val to: VisualisationColor)
 fun TemporalData.toNetworkRenderDataSource(): () -> NetworkRenderData = {
     NetworkRenderData(
         cruxAdapter.getColors(),
-        emptyList()
+        cruxAdapter.getLinks()
     )
 }

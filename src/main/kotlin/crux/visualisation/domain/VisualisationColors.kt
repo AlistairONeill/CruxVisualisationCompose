@@ -14,7 +14,7 @@ enum class VisualisationColor(val hex: String) {
 object VisualisationColors {
     private val map = VisualisationColor.values().associateBy(VisualisationColor::hex)
 
-    fun get(hex: String) = map[hex]!!
+    operator fun get(hex: String) = map[hex]!!
 }
 
 fun String.hexToColor(): Long =
