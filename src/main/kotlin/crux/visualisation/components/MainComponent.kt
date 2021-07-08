@@ -8,6 +8,7 @@ import crux.visualisation.components.generic.SidePanels
 import crux.visualisation.components.visualisation.VisualisationPanel
 import crux.visualisation.domain.TemporalData
 import crux.visualisation.domain.toInputAcceptor
+import crux.visualisation.domain.toSetVisualisationColor
 import crux.visualisation.domain.visualisation.toNetworkRenderDataSource
 import crux.visualisation.domain.visualisation.toGraphRenderDataSource
 import crux.visualisation.domain.visualisation.toVisualisationMode
@@ -19,7 +20,8 @@ fun MainComponent(
     VisualisationPanel(
         temporalData.value.visualisationMode,
         temporalData.value.toGraphRenderDataSource(),
-        temporalData.value.toNetworkRenderDataSource()
+        temporalData.value.toNetworkRenderDataSource(),
+        temporalData.toSetVisualisationColor()
     )
 
     SidePanels(

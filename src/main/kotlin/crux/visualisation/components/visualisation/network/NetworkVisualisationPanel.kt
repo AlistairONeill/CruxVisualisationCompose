@@ -1,6 +1,7 @@
 package crux.visualisation.components.visualisation.network
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -11,14 +12,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.input.pointer.pointerMoveFilter
+import crux.visualisation.domain.VisualisationColor
 import crux.visualisation.domain.renderColor
 import crux.visualisation.domain.visualisation.NetworkRenderData
+import java.util.concurrent.atomic.AtomicReference
 import kotlin.math.*
 
 @Composable
 fun NetworkVisualisationPanel(
-    renderData: NetworkRenderData
+    renderData: NetworkRenderData,
+    setSelectedColor: (VisualisationColor?) -> Unit
 ) {
+    val offsetToColourRef = AtomicReference<((Offset) -> VisualisationColor?)?>(null)
+    val mousePositionRef = AtomicReference<Offset?>(null)
+
     Box(
         Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -26,19 +34,35 @@ fun NetworkVisualisationPanel(
         Canvas(
             Modifier
                 .fillMaxSize(0.8f)
+                .pointerMoveFilter(
+                    onMove = {
+                        mousePositionRef.set(it)
+                        false
+                    }
+                )
+                .clickable {
+                    val offsetToColor = offsetToColourRef.get()
+                    val mousePosition = mousePositionRef.get()
+                    if (offsetToColor != null && mousePosition != null) {
+                        offsetToColor(mousePosition).let(setSelectedColor)
+                    }
+                }
         ) {
             drawNetwork(
-                renderData
+                renderData,
+                offsetToColourRef
             )
         }
     }
 }
 
 private const val radius = 100f
-private const val STROKE_WIDTH = 15f
+private const val deselectedWidth = 10f
+private const val selectedWidth = 20f
 
 private fun DrawScope.drawNetwork(
-    renderData: NetworkRenderData
+    renderData: NetworkRenderData,
+    positionToColor: AtomicReference<((Offset) -> VisualisationColor?)?>
 ) {
     val height = size.height
     val width = size.width
@@ -51,6 +75,12 @@ private fun DrawScope.drawNetwork(
         val y = height / 2 + bigRadius * sin(angle)
         color to Offset(x.toFloat(), y.toFloat())
     }.toMap()
+
+    positionToColor.set { offset ->
+        positions.entries.firstOrNull { (_, position) ->
+            distance(position, offset) < radius
+        }?.key
+    }
 
     for (link in renderData.links) {
         val from = positions[link.from] ?: continue
@@ -74,10 +104,10 @@ private fun DrawScope.drawNetwork(
         )
 
         drawCircle(
-            Color.Black,
+            if (colour == renderData.selectedColor) Color.Black else Color.DarkGray,
             radius,
             offset,
-            style = Stroke(STROKE_WIDTH)
+            style = Stroke(if (colour == renderData.selectedColor) selectedWidth else deselectedWidth)
         )
     }
 }
@@ -106,7 +136,6 @@ private fun DrawScope.drawArrow(
     val y1 = mmy - headSize * sin(theta + PI / 4).toFloat()
     val y2 = mmy - headSize * sin(theta - PI / 4).toFloat()
 
-
     drawPath(
         path = Path().apply {
             moveTo(start.x, start.y)
@@ -122,4 +151,10 @@ private fun DrawScope.drawArrow(
         color = color,
         style = Stroke(strokeWidth)
     )
+}
+
+private fun distance(offset1: Offset, offset2: Offset): Float {
+    val dx = offset1.x - offset2.x
+    val dy = offset1.y - offset2.y
+    return sqrt(dx * dx + dy * dy)
 }

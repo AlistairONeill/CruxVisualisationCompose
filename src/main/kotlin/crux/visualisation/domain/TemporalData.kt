@@ -10,13 +10,15 @@ import crux.visualisation.domain.visualisation.VisualisationMode.SimpleColorGrap
 class TemporalData private constructor(
     val cruxAdapter: CruxAdapter,
     val history: List<HistoryItem>,
-    val visualisationMode: VisualisationMode
+    val visualisationMode: VisualisationMode,
+    val selectedVisualisationColor: VisualisationColor?
 ) {
     companion object {
         fun new(crux: ICruxAPI): TemporalData = TemporalData(
             CruxAdapter(crux),
             emptyList(),
-            SimpleColorGraph
+            SimpleColorGraph,
+            null
         )
     }
 
@@ -24,15 +26,27 @@ class TemporalData private constructor(
         TemporalData(
             cruxAdapter,
             history + cruxAdapter.submit(inputWithTimes),
-            visualisationMode
+            visualisationMode,
+            selectedVisualisationColor
         )
 
     fun withVisualisationMode(visualisationMode: VisualisationMode) =
         TemporalData(
             cruxAdapter,
             history,
-            visualisationMode
+            visualisationMode,
+            selectedVisualisationColor
+        )
+
+    fun selectVisualisationColor(visualisationColor: VisualisationColor?) =
+        TemporalData(
+            cruxAdapter,
+            history,
+            visualisationMode,
+            visualisationColor
         )
 }
 
 fun MutableState<TemporalData>.toInputAcceptor(): (InputDataWithTimes) -> Unit = { value = value.submit(it) }
+
+fun MutableState<TemporalData>.toSetVisualisationColor(): (VisualisationColor?) -> Unit = { value = value.selectVisualisationColor(it) }
