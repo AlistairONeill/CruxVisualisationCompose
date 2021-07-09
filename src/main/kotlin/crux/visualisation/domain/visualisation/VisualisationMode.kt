@@ -1,14 +1,13 @@
 package crux.visualisation.domain.visualisation
 
 import androidx.compose.runtime.MutableState
-import crux.api.query.domain.Query
 import crux.visualisation.MutableDerivative
 import crux.visualisation.domain.TemporalData
 import crux.visualisation.domain.visualisation.VisualisationData.NetworkGraphData
 import crux.visualisation.domain.visualisation.VisualisationData.SimpleColorGraphData
 import crux.visualisation.domain.visualisation.VisualisationMode.NetworkGraph
 import crux.visualisation.domain.visualisation.VisualisationMode.SimpleColorGraph
-import crux.visualisation.domain.visualisation.VisualisationQuery.IDENTITY
+import crux.visualisation.domain.visualisation.VisualisationQuery.Identity
 
 enum class VisualisationMode {
     SimpleColorGraph, NetworkGraph
@@ -20,14 +19,14 @@ sealed class VisualisationData(val visualisationMode: VisualisationMode) {
 }
 
 enum class VisualisationQuery {
-    IDENTITY
+    Identity, Direct
 }
 
 fun VisualisationData.toMode(mode: VisualisationMode) =
     when (mode) {
         SimpleColorGraph -> SimpleColorGraphData
         NetworkGraph -> when (this) {
-            SimpleColorGraphData -> NetworkGraphData(IDENTITY)
+            SimpleColorGraphData -> NetworkGraphData(Identity)
             is NetworkGraphData -> this
         }
     }

@@ -85,7 +85,7 @@ private fun DrawScope.drawNetwork(
         val to = positions[link.to] ?: continue
 
         drawArrow(
-            if (renderData.highlightedLinks.contains(link)) Black else DarkGray,
+            if (renderData.highlightedLinks.contains(link)) Green else Black,
             from,
             to,
             50f,
@@ -103,8 +103,8 @@ private fun DrawScope.drawNetwork(
 
         drawCircle(
             when {
-                colour == renderData.selectedColor -> Green
-                renderData.highlightedColours.contains(colour) -> Black
+                colour == renderData.selectedColor -> Black
+                renderData.highlightedColours.contains(colour) -> Green
                 else -> DarkGray
             },
             radius,
