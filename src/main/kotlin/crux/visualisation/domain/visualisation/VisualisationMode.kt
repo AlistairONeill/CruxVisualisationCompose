@@ -19,7 +19,7 @@ sealed class VisualisationData(val visualisationMode: VisualisationMode) {
 }
 
 enum class VisualisationQuery {
-    Identity, Direct
+    Identity, Direct, Recursive
 }
 
 fun VisualisationData.toMode(mode: VisualisationMode) =

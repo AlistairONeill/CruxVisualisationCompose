@@ -15,3 +15,5 @@ internal val start  = "start".sym
 internal val end = "end".sym
 internal val link = "link".sym
 internal val intermediate = "intermediate".sym
+internal val linksTo = "linksTo".sym
+internal val linksVia = "linksVia".sym
