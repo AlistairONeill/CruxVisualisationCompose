@@ -5,16 +5,10 @@ import crux.api.query.conversion.q
 import crux.api.underware.kw
 import crux.api.underware.sym
 import crux.visualisation.domain.CruxAdapter.Companion.TYPE_LINK
+import crux.visualisation.domain.VisualisationColor
 import crux.visualisation.domain.VisualisationColors
 import crux.visualisation.domain.visualisation.Link
-
-private val entity = "id".sym
-private val type = "type".kw
-val from = "from".sym
-val to = "to".sym
-private val fromKey = "from".kw
-private val toKey = "to".kw
-
+import crux.visualisation.domain.visualisation.VisualisationQuery
 
 fun ICruxDatasource.getLinks(): List<Link> =
     q {
@@ -34,3 +28,10 @@ fun ICruxDatasource.getLinks(): List<Link> =
             VisualisationColors[it[1] as String]
         )
     }
+
+fun ICruxDatasource.getHighlightedLinks(query: VisualisationQuery, input: VisualisationColor?): List<Link> =
+    if (input == null) emptyList() else when (query) {
+        VisualisationQuery.IDENTITY -> getIdentityLinks(input)
+    }
+
+private fun ICruxDatasource.getIdentityLinks(input: VisualisationColor) = emptyList<Link>()
