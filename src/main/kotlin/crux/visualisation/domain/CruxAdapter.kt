@@ -22,7 +22,10 @@ import crux.visualisation.domain.input.ValidTimeData.HasValidTime
 import crux.visualisation.domain.input.ValidTimeData.HasValidTime.HasEndValidTime
 import crux.visualisation.domain.input.ValidTimeData.HasValidTime.OnlyValidTime
 import crux.visualisation.domain.input.operation
+import crux.visualisation.domain.visualisation.VisualisationQuery
 import crux.visualisation.query.getColors
+import crux.visualisation.query.getHighlightedColours
+import crux.visualisation.query.getHighlightedLinks
 import crux.visualisation.query.getLinks
 import java.time.Duration
 import java.time.LocalDate
@@ -90,6 +93,9 @@ class CruxAdapter(crux: ICruxAPI) {
 
     fun getColors(): List<VisualisationColor> = crux.db().getColors()
     fun getLinks() = crux.db().getLinks()
+
+    fun getHighlightedColours(query: VisualisationQuery, input: VisualisationColor?) = crux.db().getHighlightedColours(query, input)
+    fun getHighlightedLinks(query: VisualisationQuery, input: VisualisationColor?) = crux.db().getHighlightedLinks(query, input)
 
     private fun LocalTime.toDate() = LocalDateTime.of(date, this).atZone(UTC).toInstant().let(Date::from)
 
