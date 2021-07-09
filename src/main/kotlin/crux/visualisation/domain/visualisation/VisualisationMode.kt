@@ -1,6 +1,7 @@
 package crux.visualisation.domain.visualisation
 
 import androidx.compose.runtime.MutableState
+import crux.api.query.domain.Query
 import crux.visualisation.MutableDerivative
 import crux.visualisation.domain.TemporalData
 import crux.visualisation.domain.visualisation.VisualisationData.NetworkGraphData
@@ -36,3 +37,8 @@ fun MutableState<TemporalData>.toVisualisationData(): MutableDerivative<Visualis
 
 fun MutableDerivative<VisualisationData>.toVisualisationMode(): MutableDerivative<VisualisationMode> =
     MutableDerivative(value.visualisationMode) { set(value.toMode(it))}
+
+fun MutableDerivative<VisualisationData>.toQuery(): MutableDerivative<VisualisationQuery> {
+    val value = value as NetworkGraphData
+    return MutableDerivative(value.query) { set(value.copy(query = it))}
+}
