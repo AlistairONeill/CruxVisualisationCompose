@@ -3,14 +3,14 @@ package crux.visualisation.domain
 import crux.api.CruxDocument
 import crux.api.CruxDocument.builder
 import crux.api.ICruxAPI
-import crux.api.query.conversion.q
 import crux.api.tx.submitTx
 import crux.visualisation.adapter.blocking
 import crux.visualisation.adapter.withLog
 import crux.visualisation.domain.history.HistoryItem
 import crux.visualisation.domain.input.InputData
-import crux.visualisation.domain.input.InputData.*
+import crux.visualisation.domain.input.InputData.Color
 import crux.visualisation.domain.input.InputData.Color.*
+import crux.visualisation.domain.input.InputData.Link
 import crux.visualisation.domain.input.InputData.Link.DeleteLink
 import crux.visualisation.domain.input.InputData.Link.PutLink
 import crux.visualisation.domain.input.InputData.None.DeleteSimpleColor
@@ -19,7 +19,8 @@ import crux.visualisation.domain.input.Operation.DELETE
 import crux.visualisation.domain.input.Operation.PUT
 import crux.visualisation.domain.input.ValidTimeData.HasNoTimes
 import crux.visualisation.domain.input.ValidTimeData.HasValidTime
-import crux.visualisation.domain.input.ValidTimeData.HasValidTime.*
+import crux.visualisation.domain.input.ValidTimeData.HasValidTime.HasEndValidTime
+import crux.visualisation.domain.input.ValidTimeData.HasValidTime.OnlyValidTime
 import crux.visualisation.domain.input.operation
 import crux.visualisation.query.getColors
 import crux.visualisation.query.getLinks

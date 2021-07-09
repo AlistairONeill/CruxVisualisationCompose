@@ -19,6 +19,7 @@ import crux.visualisation.domain.visualisation.NetworkRenderData
 import java.util.concurrent.atomic.AtomicReference
 import kotlin.math.*
 
+@Suppress("FunctionName")
 @Composable
 fun NetworkVisualisationPanel(
     renderData: NetworkRenderData,

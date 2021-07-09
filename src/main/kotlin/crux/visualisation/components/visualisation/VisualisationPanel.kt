@@ -11,8 +11,6 @@ import crux.visualisation.domain.visualisation.NetworkRenderData
 import crux.visualisation.domain.visualisation.VisualisationData
 import crux.visualisation.domain.visualisation.VisualisationData.NetworkGraphData
 import crux.visualisation.domain.visualisation.VisualisationData.SimpleColorGraphData
-import crux.visualisation.domain.visualisation.VisualisationMode
-import crux.visualisation.domain.visualisation.VisualisationMode.SimpleColorGraph
 import crux.visualisation.exhaustive
 
 @Composable

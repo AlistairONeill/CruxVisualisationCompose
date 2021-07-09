@@ -1,3 +1,5 @@
+@file:Suppress("FunctionName")
+
 package crux.visualisation.components.visualisation
 
 import androidx.compose.foundation.layout.Column

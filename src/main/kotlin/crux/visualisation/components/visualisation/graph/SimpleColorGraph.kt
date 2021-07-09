@@ -24,6 +24,7 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 
+@Suppress("FunctionName")
 @Composable
 fun SimpleColorGraphPanel(
     renderData: GraphRenderData

@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import crux.visualisation.domain.input.InputData.Color.*
 import java.time.LocalTime
 
+@Suppress("FunctionName")
 @Composable
 fun HistoryItemPanel(
     width: Dp,
