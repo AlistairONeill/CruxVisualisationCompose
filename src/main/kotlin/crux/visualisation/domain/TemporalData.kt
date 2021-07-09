@@ -4,20 +4,20 @@ import androidx.compose.runtime.MutableState
 import crux.api.ICruxAPI
 import crux.visualisation.domain.history.HistoryItem
 import crux.visualisation.domain.input.InputDataWithTimes
-import crux.visualisation.domain.visualisation.VisualisationMode
-import crux.visualisation.domain.visualisation.VisualisationMode.SimpleColorGraph
+import crux.visualisation.domain.visualisation.VisualisationData
+import crux.visualisation.domain.visualisation.VisualisationData.SimpleColorGraphData
 
 class TemporalData private constructor(
     val cruxAdapter: CruxAdapter,
     val history: List<HistoryItem>,
-    val visualisationMode: VisualisationMode,
+    val visualisationData: VisualisationData,
     val selectedVisualisationColor: VisualisationColor?
 ) {
     companion object {
         fun new(crux: ICruxAPI): TemporalData = TemporalData(
             CruxAdapter(crux),
             emptyList(),
-            SimpleColorGraph,
+            SimpleColorGraphData,
             null
         )
     }
@@ -26,15 +26,15 @@ class TemporalData private constructor(
         TemporalData(
             cruxAdapter,
             history + cruxAdapter.submit(inputWithTimes),
-            visualisationMode,
+            visualisationData,
             selectedVisualisationColor
         )
 
-    fun withVisualisationMode(visualisationMode: VisualisationMode) =
+    fun withVisualisationData(visualisationData: VisualisationData) =
         TemporalData(
             cruxAdapter,
             history,
-            visualisationMode,
+            visualisationData,
             selectedVisualisationColor
         )
 
@@ -42,7 +42,7 @@ class TemporalData private constructor(
         TemporalData(
             cruxAdapter,
             history,
-            visualisationMode,
+            visualisationData,
             visualisationColor
         )
 }

@@ -21,17 +21,17 @@ import crux.visualisation.MutableDerivative
 import crux.visualisation.components.generic.SidePanelId.*
 import crux.visualisation.components.history.HistoryPanel
 import crux.visualisation.components.input.TimedInputPanel
-import crux.visualisation.components.visualisation.VisualisationModePanel
+import crux.visualisation.components.visualisation.VisualisationDataPanel
 import crux.visualisation.domain.history.HistoryItem
 import crux.visualisation.domain.input.InputDataWithTimes
-import crux.visualisation.domain.visualisation.VisualisationMode
+import crux.visualisation.domain.visualisation.VisualisationData
 import crux.visualisation.exhaustive
 
 @Composable
 fun SidePanels(
     inputAcceptor: (InputDataWithTimes) -> Unit,
     history: List<HistoryItem>,
-    mutableVisualisationMode: MutableDerivative<VisualisationMode>
+    mutableVisualisationData: MutableDerivative<VisualisationData>
 ) {
     val (expanded, setExpanded) = remember { mutableStateOf(false) }
     val (expandedPanel, setExpandedPanel) = remember { mutableStateOf<SidePanelId?>(null) }
@@ -99,7 +99,7 @@ fun SidePanels(
                     when (expandedPanel) {
                         History -> HistoryPanel(width, history)
                         Input -> TimedInputPanel(width, inputAcceptor)
-                        Visualisation -> VisualisationModePanel(width, mutableVisualisationMode)
+                        Visualisation -> VisualisationDataPanel(width, mutableVisualisationData)
                     }.exhaustive
                 }
             }

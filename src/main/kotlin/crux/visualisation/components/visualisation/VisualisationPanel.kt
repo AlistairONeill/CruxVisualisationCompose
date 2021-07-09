@@ -8,20 +8,23 @@ import crux.visualisation.components.visualisation.network.NetworkVisualisationP
 import crux.visualisation.domain.VisualisationColor
 import crux.visualisation.domain.visualisation.GraphRenderData
 import crux.visualisation.domain.visualisation.NetworkRenderData
+import crux.visualisation.domain.visualisation.VisualisationData
+import crux.visualisation.domain.visualisation.VisualisationData.NetworkGraphData
+import crux.visualisation.domain.visualisation.VisualisationData.SimpleColorGraphData
 import crux.visualisation.domain.visualisation.VisualisationMode
 import crux.visualisation.domain.visualisation.VisualisationMode.SimpleColorGraph
 import crux.visualisation.exhaustive
 
 @Composable
 fun VisualisationPanel(
-    visualisationMode: VisualisationMode,
+    visualisationData: VisualisationData,
     graphRenderDataSource: () -> GraphRenderData,
     networkRenderDataSource: () -> NetworkRenderData,
     setSelectedColor: (VisualisationColor?) -> Unit
 ) {
-    when (visualisationMode) {
-        SimpleColorGraph -> SimpleColorGraphPanel(graphRenderDataSource())
-        VisualisationMode.NetworkGraph -> NetworkVisualisationPanel(
+    when (visualisationData) {
+        SimpleColorGraphData -> SimpleColorGraphPanel(graphRenderDataSource())
+        is NetworkGraphData -> NetworkVisualisationPanel(
             networkRenderDataSource(),
             setSelectedColor
         )

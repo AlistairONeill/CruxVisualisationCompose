@@ -11,14 +11,14 @@ import crux.visualisation.domain.toInputAcceptor
 import crux.visualisation.domain.toSetVisualisationColor
 import crux.visualisation.domain.visualisation.toNetworkRenderDataSource
 import crux.visualisation.domain.visualisation.toGraphRenderDataSource
-import crux.visualisation.domain.visualisation.toVisualisationMode
+import crux.visualisation.domain.visualisation.toVisualisationData
 
 @Composable
 fun MainComponent(
     temporalData: MutableState<TemporalData>
 ) {
     VisualisationPanel(
-        temporalData.value.visualisationMode,
+        temporalData.value.visualisationData,
         temporalData.value.toGraphRenderDataSource(),
         temporalData.value.toNetworkRenderDataSource(),
         temporalData.toSetVisualisationColor()
@@ -27,6 +27,6 @@ fun MainComponent(
     SidePanels(
         temporalData.toInputAcceptor(),
         temporalData.value.history,
-        temporalData.toVisualisationMode()
+        temporalData.toVisualisationData()
     )
 }

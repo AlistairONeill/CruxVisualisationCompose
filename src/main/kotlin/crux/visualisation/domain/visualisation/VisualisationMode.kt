@@ -3,11 +3,36 @@ package crux.visualisation.domain.visualisation
 import androidx.compose.runtime.MutableState
 import crux.visualisation.MutableDerivative
 import crux.visualisation.domain.TemporalData
+import crux.visualisation.domain.visualisation.VisualisationData.NetworkGraphData
+import crux.visualisation.domain.visualisation.VisualisationData.SimpleColorGraphData
+import crux.visualisation.domain.visualisation.VisualisationMode.NetworkGraph
+import crux.visualisation.domain.visualisation.VisualisationMode.SimpleColorGraph
+import crux.visualisation.domain.visualisation.VisualisationQuery.IDENTITY
 
 enum class VisualisationMode {
     SimpleColorGraph, NetworkGraph
 }
 
-fun MutableState<TemporalData>.toVisualisationMode(): MutableDerivative<VisualisationMode> {
-    return MutableDerivative(value.visualisationMode) { value = value.withVisualisationMode(it) }
+sealed class VisualisationData(val visualisationMode: VisualisationMode) {
+    object SimpleColorGraphData: VisualisationData(SimpleColorGraph)
+    data class NetworkGraphData(val query: VisualisationQuery): VisualisationData(NetworkGraph)
 }
+
+enum class VisualisationQuery {
+    IDENTITY
+}
+
+fun VisualisationData.toMode(mode: VisualisationMode) =
+    when (mode) {
+        SimpleColorGraph -> SimpleColorGraphData
+        NetworkGraph -> when (this) {
+            SimpleColorGraphData -> NetworkGraphData(IDENTITY)
+            is NetworkGraphData -> this
+        }
+    }
+
+fun MutableState<TemporalData>.toVisualisationData(): MutableDerivative<VisualisationData> =
+    MutableDerivative(value.visualisationData) { value = value.withVisualisationData(it) }
+
+fun MutableDerivative<VisualisationData>.toVisualisationMode(): MutableDerivative<VisualisationMode> =
+    MutableDerivative(value.visualisationMode) { set(value.toMode(it))}
