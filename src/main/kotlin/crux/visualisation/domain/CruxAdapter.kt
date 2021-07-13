@@ -22,6 +22,7 @@ import crux.visualisation.domain.input.ValidTimeData.HasValidTime
 import crux.visualisation.domain.input.ValidTimeData.HasValidTime.HasEndValidTime
 import crux.visualisation.domain.input.ValidTimeData.HasValidTime.OnlyValidTime
 import crux.visualisation.domain.input.operation
+import crux.visualisation.domain.visualisation.NetworkRenderData
 import crux.visualisation.domain.visualisation.VisualisationQuery
 import crux.visualisation.query.getColors
 import crux.visualisation.query.getHighlightedColours
@@ -91,11 +92,20 @@ class CruxAdapter(crux: ICruxAPI) {
             .entity(SIMPLE_ID)
             ?.get(COLOUR_KEY) as String?
 
-    fun getColors(): List<VisualisationColor> = crux.db().getColors()
-    fun getLinks() = crux.db().getLinks()
-
-    fun getHighlightedColours(query: VisualisationQuery, input: VisualisationColor?) = crux.db().getHighlightedColours(query, input)
-    fun getHighlightedLinks(query: VisualisationQuery, input: VisualisationColor?) = crux.db().getHighlightedLinks(query, input)
+    fun getNetworkRenderData(
+        query: VisualisationQuery,
+        selectedColor: VisualisationColor?
+    ) = crux
+        .db()
+        .use { db ->
+            NetworkRenderData(
+                db.getColors(),
+                db.getLinks(),
+                selectedColor,
+                db.getHighlightedColours(query, selectedColor),
+                db.getHighlightedLinks(query, selectedColor)
+            )
+        }
 
     private fun LocalTime.toDate() = LocalDateTime.of(date, this).atZone(UTC).toInstant().let(Date::from)
 

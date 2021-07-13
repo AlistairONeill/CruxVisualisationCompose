@@ -18,11 +18,5 @@ fun TemporalData.toNetworkRenderDataSource(): () -> NetworkRenderData = {
     val visualisationData = visualisationData as? NetworkGraphData ?: throw Exception("Ruh roh")
     val query = visualisationData.query
 
-    NetworkRenderData(
-        cruxAdapter.getColors(),
-        cruxAdapter.getLinks(),
-        selectedVisualisationColor,
-        cruxAdapter.getHighlightedColours(query, selectedVisualisationColor),
-        cruxAdapter.getHighlightedLinks(query, selectedVisualisationColor)
-    )
+    cruxAdapter.getNetworkRenderData(query, selectedVisualisationColor)
 }
