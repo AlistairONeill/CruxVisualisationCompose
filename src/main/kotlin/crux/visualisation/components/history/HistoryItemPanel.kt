@@ -26,6 +26,7 @@ import crux.visualisation.domain.input.operation
 import crux.visualisation.domain.renderColor
 import androidx.compose.ui.graphics.Color
 import crux.visualisation.domain.input.InputData.Color.*
+import crux.visualisation.exhaustive
 import java.time.LocalTime
 
 @Suppress("FunctionName")
@@ -50,20 +51,42 @@ fun HistoryItemPanel(
                         Icon(
                             Icons.Filled.AddCircle,
                             null,
+                            modifier = Modifier.size(72.dp),
                             tint = inputData.color.renderColor.let(::Color)
                         )
                     }
                     DeleteSimpleColor -> {
                         Icon(
                             Icons.Default.Delete,
-                            null
+                            null,
+                            modifier = Modifier.size(72.dp)
                         )
                     }
-                    is PutColor -> TODO()
-                    is DeleteColor -> TODO()
-                    is PutLink -> TODO()
-                    is DeleteLink -> TODO()
-                }
+                    is PutColor -> Icon(
+                        Icons.Filled.AddCircle,
+                        null,
+                        modifier = Modifier.size(72.dp),
+                        tint = inputData.color.renderColor.let(::Color)
+                    )
+                    is DeleteColor -> Icon(
+                        Icons.Default.Delete,
+                        null,
+                        modifier = Modifier.size(72.dp),
+                        tint = inputData.color.renderColor.let(::Color)
+                    )
+                    is PutLink ->
+                        Icon(
+                            Icons.Filled.AddCircle,
+                            null,
+                            modifier = Modifier.size(72.dp)
+                        )
+                    is DeleteLink ->
+                        Icon(
+                            Icons.Default.Delete,
+                            null,
+                            modifier = Modifier.size(72.dp)
+                        )
+                }.exhaustive
             }
 
             Column(
