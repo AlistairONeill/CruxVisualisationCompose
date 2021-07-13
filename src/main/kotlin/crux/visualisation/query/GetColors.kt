@@ -1,9 +1,9 @@
+@file:Suppress("DuplicatedCode") //This is supposed to be a demo
+
 package crux.visualisation.query
 
 import crux.api.ICruxDatasource
-import crux.api.query.context.QueryContext
 import crux.api.query.conversion.q
-import crux.api.query.conversion.toEdn
 import crux.visualisation.domain.CruxAdapter.Companion.TYPE_COLOUR
 import crux.visualisation.domain.CruxAdapter.Companion.TYPE_LINK
 import crux.visualisation.domain.VisualisationColor
@@ -32,8 +32,6 @@ fun ICruxDatasource.getHighlightedColours(query: VisualisationQuery, input: Visu
         Recursive -> getRecursive(input)
         Cycle -> getCycle(input)
     }
-
-private fun getIdentity(input: VisualisationColor) = listOf(input)
 
 private fun ICruxDatasource.getDirect(input: VisualisationColor) =
     q {

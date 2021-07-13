@@ -1,3 +1,5 @@
+@file:Suppress("DuplicatedCode") //This is supposed to be a demo
+
 package crux.visualisation.query
 
 import crux.api.ICruxDatasource
