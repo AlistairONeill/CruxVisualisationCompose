@@ -34,7 +34,7 @@ fun ICruxDatasource.getHighlightedLinks(query: VisualisationQuery, input: Visual
         Identity -> getIdentity()
         Direct -> getDirect(input)
         Recursive -> getRecursive(input)
-        Cycle -> getIdentity() //TODO
+        Cycle -> getCycle(input)
     }
 
 private fun getIdentity() = emptyList<Link>()
@@ -89,6 +89,57 @@ private fun ICruxDatasource.getRecursive(input: VisualisationColor) =
                 intermediate has fromKey eq start
                 intermediate has toKey eq end
                 rule(linksVia) (end, link)
+            }
+        }
+    }.map {
+        Link(
+            VisualisationColors[it[0] as String],
+            VisualisationColors[it[1] as String]
+        )
+    }
+
+private fun ICruxDatasource.getCycle(input: VisualisationColor) =
+    q {
+        find {
+            +from
+            +to
+        }
+
+        where {
+            start has type eq TYPE_COLOUR
+            start has color eq input.hex
+
+            end has type eq TYPE_COLOUR
+            end has color eq input.hex
+
+            link has type eq TYPE_LINK
+            link has fromKey eq from
+            link has toKey eq to
+
+            lonk has type eq TYPE_LINK
+
+            intermediate has type eq TYPE_COLOUR
+            indirection has type eq TYPE_COLOUR
+            intermediate has color eq hex
+            indirection has color eq hex
+
+            rule(linksVia) (start, intermediate, link)
+            rule(linksVia) (indirection, end, lonk)
+        }
+
+        rules {
+            def(linksVia) [start, end] (link) {
+                link has type eq TYPE_LINK
+                link has fromKey eq start
+                link has toKey eq end
+            }
+
+            def(linksVia) [start, end] (link) {
+                intermediate has type eq TYPE_COLOUR
+                lonk has type eq TYPE_LINK
+                lonk has fromKey eq start
+                lonk has toKey eq intermediate
+                rule(linksVia) (intermediate, end, link)
             }
         }
     }.map {
