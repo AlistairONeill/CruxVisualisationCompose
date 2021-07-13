@@ -28,7 +28,6 @@ fun ICruxDatasource.getColors(): List<VisualisationColor> =
 
 fun ICruxDatasource.getHighlightedColours(query: VisualisationQuery, input: VisualisationColor?): List<VisualisationColor> =
     if (input == null) emptyList() else when (query) {
-        Identity -> getIdentity(input)
         Direct -> getDirect(input)
         Recursive -> getRecursive(input)
         Cycle -> getCycle(input)

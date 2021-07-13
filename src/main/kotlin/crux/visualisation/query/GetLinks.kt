@@ -31,13 +31,10 @@ fun ICruxDatasource.getLinks(): List<Link> =
 
 fun ICruxDatasource.getHighlightedLinks(query: VisualisationQuery, input: VisualisationColor?): List<Link> =
     if (input == null) emptyList() else when (query) {
-        Identity -> getIdentity()
         Direct -> getDirect(input)
         Recursive -> getRecursive(input)
         Cycle -> getCycle(input)
     }
-
-private fun getIdentity() = emptyList<Link>()
 
 private fun ICruxDatasource.getDirect(input: VisualisationColor) =
     q {

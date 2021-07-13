@@ -7,7 +7,7 @@ import crux.visualisation.domain.visualisation.VisualisationData.NetworkGraphDat
 import crux.visualisation.domain.visualisation.VisualisationData.SimpleColorGraphData
 import crux.visualisation.domain.visualisation.VisualisationMode.NetworkGraph
 import crux.visualisation.domain.visualisation.VisualisationMode.SimpleColorGraph
-import crux.visualisation.domain.visualisation.VisualisationQuery.Identity
+import crux.visualisation.domain.visualisation.VisualisationQuery.Direct
 
 enum class VisualisationMode {
     SimpleColorGraph, NetworkGraph
@@ -19,14 +19,14 @@ sealed class VisualisationData(val visualisationMode: VisualisationMode) {
 }
 
 enum class VisualisationQuery {
-    Identity, Direct, Recursive, Cycle
+    Direct, Recursive, Cycle
 }
 
 fun VisualisationData.toMode(mode: VisualisationMode) =
     when (mode) {
         SimpleColorGraph -> SimpleColorGraphData
         NetworkGraph -> when (this) {
-            SimpleColorGraphData -> NetworkGraphData(Identity)
+            SimpleColorGraphData -> NetworkGraphData(Direct)
             is NetworkGraphData -> this
         }
     }
