@@ -21,7 +21,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
     implementation(compose.desktop.currentOs)
-    implementation("pro.juxt.crux:crux-kotlin-dsl:0.0.3")
+    implementation("pro.juxt.crux:crux-kotlin-dsl:0.0.4")
 }
 
 tasks.test {

@@ -17,3 +17,13 @@ internal val link = "link".sym
 internal val intermediate = "intermediate".sym
 internal val linksTo = "linksTo".sym
 internal val linksVia = "linksVia".sym
+
+internal val a = "a".sym
+internal val b = "b".sym
+internal val c = "c".sym
+internal val d = "d".sym
+internal val e = "e".sym
+internal val f = "f".sym
+internal val g = "g".sym
+internal val h = "h".sym
+internal val i = "i".sym

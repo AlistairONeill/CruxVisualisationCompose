@@ -1,7 +1,9 @@
 package crux.visualisation.query
 
 import crux.api.ICruxDatasource
+import crux.api.query.context.QueryContext
 import crux.api.query.conversion.q
+import crux.api.query.conversion.toEdn
 import crux.visualisation.domain.CruxAdapter.Companion.TYPE_COLOUR
 import crux.visualisation.domain.CruxAdapter.Companion.TYPE_LINK
 import crux.visualisation.domain.VisualisationColor
@@ -29,6 +31,7 @@ fun ICruxDatasource.getHighlightedColours(query: VisualisationQuery, input: Visu
         Identity -> getIdentity(input)
         Direct -> getDirect(input)
         Recursive -> getRecursive(input)
+        Cycle -> getCycle(input)
     }
 
 private fun getIdentity(input: VisualisationColor) = listOf(input)
@@ -60,22 +63,62 @@ private fun ICruxDatasource.getRecursive(input: VisualisationColor) =
 
         where {
             start has color eq input.hex
+            start has type eq TYPE_COLOUR
             end has color eq hex
+            end has type eq TYPE_COLOUR
 
             rule(linksTo) (start, end)
         }
 
         rules {
-            def(linksTo) (start, end) {
-                start has type eq TYPE_COLOUR
-                end has type eq TYPE_COLOUR
+            def(linksTo) [start] (end) {
                 link has type eq TYPE_LINK
                 link has fromKey eq start
                 link has toKey eq end
             }
 
-            def(linksTo) (start, end) {
-                rule(linksTo) (start, intermediate)
+            def(linksTo) [start] (end) {
+                intermediate has type eq TYPE_COLOUR
+                link has type eq TYPE_LINK
+                link has fromKey eq start
+                link has toKey eq intermediate
+                rule(linksTo) (intermediate, end)
+            }
+        }
+    }
+        .map { it.single() as String }
+        .map(VisualisationColors::get)
+
+private fun ICruxDatasource.getCycle(input: VisualisationColor) =
+    q {
+        find {
+            + hex
+        }
+
+        where {
+            start has type eq TYPE_COLOUR
+            start has color eq input.hex
+            intermediate has type eq TYPE_COLOUR
+            intermediate has color eq hex
+            end has type eq TYPE_COLOUR
+            end has color eq input.hex
+
+            rule (linksTo) (start, intermediate)
+            rule (linksTo) (intermediate, end)
+        }
+
+        rules {
+            def(linksTo) [start] (end) {
+                link has type eq TYPE_LINK
+                link has fromKey eq start
+                link has toKey eq end
+            }
+
+            def(linksTo) [start] (end) {
+                intermediate has type eq TYPE_COLOUR
+                link has type eq TYPE_LINK
+                link has fromKey eq start
+                link has toKey eq intermediate
                 rule(linksTo) (intermediate, end)
             }
         }

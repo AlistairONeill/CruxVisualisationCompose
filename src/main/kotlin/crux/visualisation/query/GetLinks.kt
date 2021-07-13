@@ -34,6 +34,7 @@ fun ICruxDatasource.getHighlightedLinks(query: VisualisationQuery, input: Visual
         Identity -> getIdentity()
         Direct -> getDirect(input)
         Recursive -> getRecursive(input)
+        Cycle -> getIdentity() //TODO
     }
 
 private fun getIdentity() = emptyList<Link>()
@@ -76,18 +77,15 @@ private fun ICruxDatasource.getRecursive(input: VisualisationColor) =
         }
 
         rules {
-            def(linksVia) (start, link) {
+            def(linksVia) [start] (link) {
                 start has type eq TYPE_COLOUR
-                end has type eq TYPE_COLOUR
                 link has type eq TYPE_LINK
                 link has fromKey eq start
             }
 
-            def(linksVia) (start, link) {
-                start has type eq TYPE_COLOUR
+            def(linksVia) [start] (link) {
                 end has type eq TYPE_COLOUR
                 intermediate has type eq TYPE_LINK
-                link has type eq TYPE_LINK
                 intermediate has fromKey eq start
                 intermediate has toKey eq end
                 rule(linksVia) (end, link)
